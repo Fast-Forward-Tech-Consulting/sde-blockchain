@@ -1,0 +1,15 @@
+{
+  "name": "sde-blockchain",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Blockchain Project for SDE at UniTN",
+  "main": "blockchain.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Eckardt",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
