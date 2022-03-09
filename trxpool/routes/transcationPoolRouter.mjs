@@ -27,4 +27,11 @@ router.post('/',
     res.send(trx);
   })
 
+/* DELETE remove trx from pool */
+router.delete('/:hash',
+  function (req, res, next) {
+    pool.removeByHash(req.params.hash);
+    res.send("success");
+  })
+
 export default router;

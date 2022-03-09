@@ -6,7 +6,7 @@ import logger from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import chainRouter from './routes/chainRouter.mjs';
+import trxPoolRouter from './routes/transcationPoolRouter.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +23,7 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, 'public')));
 
-app.use('/chain', chainRouter);
+app.use('/trxpool', trxPoolRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

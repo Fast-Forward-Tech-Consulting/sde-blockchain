@@ -4,7 +4,6 @@ import { param, body, validationResult } from 'express-validator';
 import chain from "../model/blockchain.mjs";
 import Block from "../model/block.mjs";
 
-import trxpool from "../model/transactionPool.mjs";
 import Transaction from '../model/transaction.mjs';
 
 var router = Router();
@@ -35,8 +34,7 @@ router.get('/blocks/latest',
 router.post('/newBlock',
   function (req, res, next) {
 
-    //var trxs = trxpool.getAll();
-    var trxs = axios.get('http://127.0.0.1:3000/trxpool')
+    var trxs = axios.get('http://127.0.0.1:3001/trxpool')
       .then(response => response.data.map(trx => Transaction.fromObject(trx)));
 
     var latestBlock = axios.get("http://127.0.0.1:3000/chain/blocks/latest")
@@ -44,15 +42,13 @@ router.post('/newBlock',
 
     Promise
       .all([trxs, latestBlock])
-      .then(([trxs, latestBlock]) => {
+      .then(async ([trxs, latestBlock]) => {
         let block = new Block(trxs, latestBlock.hash);
         chain.addNewBlock(block);
 
-        for (const trx of trxs) {
-          console.log(trx);
-          trxpool.remove(trx);
-        };
-
+        trxs.map(trx => {
+          axios.delete(`http://127.0.0.1:3001/trxpool/${trx.hash}`).catch(console.log)
+        });
         res.send(block);
       })
       .catch(error => console.log(error));

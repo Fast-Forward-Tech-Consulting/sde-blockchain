@@ -19,14 +19,6 @@ class TransactionPool {
         this.#pool.push(trxToBeAdded);
     }
 
-    /**
-     * Remove a transaction from the pool
-     * @param {*} trxToBeRemoved Transaction to be removed
-     */
-    remove(trxToBeRemoved) {
-        this.removeByHash(trxToBeRemoved.hash)
-    }
-
     removeByHash(hash) {
         if (!this.#pool.some(trx => trx.hash === hash)) {
             throw new Error(`Trx ${hash} is not in pool and cannot be removed`);
