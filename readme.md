@@ -19,6 +19,7 @@
 
 # Blockchain Application
 This is a simple Blockchain application playing with the concepts of Proof of Work, Transaction Pools and Cryptographic signatures. On the infrastructure side it leverages containers to scale up certain components (mining). 
+![System Overview](system_overview.png?raw=true "System Overview")
 
 # Useful Commands
 
