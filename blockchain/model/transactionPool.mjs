@@ -12,7 +12,7 @@ class TransactionPool {
      * @param {*} trx Transaction to be added
      */
     add(trx) {
-        if (this.#pool.includes(trx)) {
+        if (this.#pool.some(trx => trx.hash === trxToBeRemoved.hash)) {
             throw new Error(`Transaction ${trx.hash} already in pool`);
         }
 
@@ -24,7 +24,7 @@ class TransactionPool {
      * @param {*} trxToBeRemoved Transaction to be removed
      */
     remove(trxToBeRemoved) {
-        if (!this.#pool.includes(trxToBeRemoved)) {
+        if (!this.#pool.some(trx => trx.hash === trxToBeRemoved.hash)) {
             throw new Error(`Trx ${trxToBeRemoved.hash} is not in pool and cannot be removed`);
         }
 

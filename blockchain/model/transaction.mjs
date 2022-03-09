@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 
-class Transcation {
+class Transaction {
     /**
      * 
      * @param {String} sender 
@@ -8,14 +8,18 @@ class Transcation {
      * @param {Number} amount 
      * @param {String} signature
      */
-    constructor(sender, receiver, amount, signature) {
-        this.createdAt = Date.now();
+    constructor(sender, receiver, amount, signature = "", createdAt = Date.now()) {
+        this.createdAt = createdAt;
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.signature = signature;
 
         this.hash = this.computeHash();
+    }
+
+    static fromObject({ sender, receiver, amount, signature, createdAt }) {
+        return new Transaction(sender, receiver, amount, signature, createdAt);
     }
 
     computeHash() { // Compute this Block's hash
@@ -25,4 +29,4 @@ class Transcation {
 }
 
 
-export default Transcation;
+export default Transaction;

@@ -1,9 +1,11 @@
-import { Router } from 'express';
+import e, { Router } from 'express';
+import axios from 'axios'
 import { param, body, validationResult } from 'express-validator';
 import chain from "../model/blockchain.mjs";
 import Block from "../model/block.mjs";
 
 import trxpool from "../model/transactionPool.mjs";
+import Transaction from '../model/transaction.mjs';
 
 var router = Router();
 
@@ -13,7 +15,7 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET Block */
-router.get('/blocks/:index',
+router.get('/blocks/:index(\d+)',
   param('index').isNumeric().toInt(),
   function (req, res, next) {
     const errors = validationResult(req);
@@ -24,23 +26,36 @@ router.get('/blocks/:index',
     res.send(chain.getBlockByIndex(req.params.index));
   });
 
+router.get('/blocks/latest',
+  function (req, res, next) {
+    res.send(chain.obtainLatestBlock());
+  });
+
 /* POST add block */
 router.post('/newBlock',
   function (req, res, next) {
 
-    var trxs = trxpool.getAll();
+    //var trxs = trxpool.getAll();
+    var trxs = axios.get('http://127.0.0.1:3000/trxpool')
+      .then(response => response.data.map(trx => Transaction.fromObject(trx)));
 
-    var block = new Block(trxs, chain.obtainLatestBlock().hash);
-    chain.addNewBlock(block);
+    var latestBlock = axios.get("http://127.0.0.1:3000/chain/blocks/latest")
+      .then(response => response.data);
 
-    console.log(trxs);
+    Promise
+      .all([trxs, latestBlock])
+      .then(([trxs, latestBlock]) => {
+        let block = new Block(trxs, latestBlock.hash);
+        chain.addNewBlock(block);
 
-    for (const trx of Object.values(trxs)) {
-      console.log(trx);
-      trxpool.remove(trx);
-    }
+        for (const trx of trxs) {
+          console.log(trx);
+          trxpool.remove(trx);
+        };
 
-    res.send(block);
+        res.send(block);
+      })
+      .catch(error => console.log(error));
   })
 
 

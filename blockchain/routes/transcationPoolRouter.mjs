@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { param, body, validationResult } from 'express-validator';
-import Transcation from "../model/transaction.mjs";
+import Transaction from "../model/transaction.mjs";
 
 import pool from "../model/transactionPool.mjs";
 
@@ -22,7 +22,7 @@ router.post('/',
       return res.status(400).json({ errors: errors.array() });
     }
 
-    var trx = new Transcation(req.body.sender, req.body.receiver, req.body.amount);
+    var trx = new Transaction(req.body.sender, req.body.receiver, req.body.amount);
     pool.add(trx);
     res.send(trx);
   })

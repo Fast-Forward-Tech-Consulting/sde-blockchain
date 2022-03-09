@@ -33,7 +33,9 @@ docker rmi martin/blockchain-app --force
 ```
 
 ## Run
+```
 docker run -p 3000:3000 -d martin/blockchain-app
+```
 
 ## Logs
 ```
