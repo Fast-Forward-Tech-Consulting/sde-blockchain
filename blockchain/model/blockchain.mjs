@@ -1,11 +1,11 @@
 import Block from "./block.mjs"
-import Transcation from "./transaction.mjs";
+import Transaction from "./transaction.mjs";
 
 let initialTransactions = [
-    new Transcation("john", "alice", 10),
-    new Transcation("greg", "mike", 5),
-    new Transcation("juliet", "grace", 1),
-    new Transcation("leonard", "john", 12),
+    new Transaction("john", "alice", 10),
+    new Transaction("greg", "mike", 5),
+    new Transaction("juliet", "grace", 1),
+    new Transaction("leonard", "john", 12),
 ];
 
 class BlockChain { // Our Blockchain Object
@@ -43,6 +43,8 @@ class BlockChain { // Our Blockchain Object
 
         if (newBlock.hash !== newBlock.computeHash())
             throw new Error("hash has been tempered with");
+
+
 
         this.#blockchain.push(newBlock) // Add the block to our chain
     }
