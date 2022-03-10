@@ -6,16 +6,17 @@ class Block { // Our Block Class
      * @param {Transaction} trx 
      * @param {String} prevHash 
      */
-    constructor(trxs, prevHash = "", nonce = 0, timestamp = Date.now()) {
-        this.nonce = nonce;
-        this.timestamp = timestamp;
+    constructor(trxs, prevHash = "", minerId, nonce = 0, timestamp = Date.now()) {
         this.trxs = trxs; // Store whatever data is relevant 
         this.prevHash = prevHash // Store the previous block's hash
+        this.minedBy = minerId;
+        this.nonce = nonce;
+        this.timestamp = timestamp;
         this.hash = this.computeHash() // Compute this block's hash
     }
 
     computeHash() { // Compute this Block's hash
-        let strBlock = this.nonce + this.prevHash + this.timestamp + JSON.stringify(this.trx) // Stringify the block's data
+        let strBlock = this.nonce + this.prevHash + this.timestamp + this.minedBy + JSON.stringify(this.trx) // Stringify the block's data
         return createHash("sha256").update(strBlock).digest("hex") // Hash said string with SHA256 encrpytion
     }
 

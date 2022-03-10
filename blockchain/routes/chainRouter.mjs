@@ -35,22 +35,26 @@ router.post('/blocks',
   body('nonce').isNumeric().toInt(),
   body('timestamp').isNumeric().toInt(),
   body('prevHash').isString(),
+  body('minedBy').isString(),
   check('trxs.*.sender').isString(),
   check('trxs.*.receiver').isString(),
   check('trxs.*.signature').isString(),
   check('trxs.*.amount').isNumeric().toInt(),
   function (req, res, next) {
+    console.log(`Blockchain - 📬 Received Block from Miner #${req?.body?.minedBy}`)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(`Blockchain - 🛑 Validation of Block from Miner #${req?.body?.minedBy} failed`)
       return res.status(400).json({ errors: errors.array() });
     }
 
-    let { trxs, nonce, timestamp, prevHash } = req.body;
+    let { trxs, nonce, timestamp, prevHash, minedBy } = req.body;
 
-    let block = new Block(trxs, nonce, timestamp, prevHash);
+    let block = new Block(trxs, nonce, timestamp, prevHash, minedBy);
     block.validate(chain.obtainLatestBlock().hash, chain.getTarget())
 
     chain.addNewBlock(block);
+    console.log(`Blockchain - 💸 Block from Miner #${req?.body?.minedBy} was added to chain`);
 
     Promise.all(trxs.map(trx => {
       axios.delete(`http://127.0.0.1:3001/trxpool/${trx.hash}`).catch(console.log)

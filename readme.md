@@ -4,14 +4,14 @@
     - [x] Genesis Block
     - [ ] Validate Blocks before adding to blockchain and send result to miner
         - [ ] sufficient funds
-        - [ ] Other miner was faster
+        - [x] Other miner was faster
 - [x] Transactions
     - [ ] Add Cryptographic signatures to Transactions
 - [x] Miner
-    - [ ] Implement Proof of Work
+    - [x] Implement Proof of Work
 
 ## Infrastructure
-- [ ] Separate Blockchain, Miner and Transactionpool in individual Express servers and let them communicate via HTTP requests and subscriptions
+- [x] Separate Blockchain, Miner and Transactionpool in individual Express servers and let them communicate via HTTP requests and subscriptions
     - [x] docker setup 
     - [ ] Setup docker-compose with network
 

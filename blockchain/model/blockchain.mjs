@@ -13,7 +13,7 @@ class BlockChain { // Our Blockchain Object
     #target;
 
     constructor() {
-        this.#target = 5;
+        this.#target = 6;
         this.#blockchain = [this.startGenesisBlock()] // Initialize a new array of blocks, starting with a genesis block
     }
 
