@@ -10,9 +10,15 @@ let initialTransactions = [
 
 class BlockChain { // Our Blockchain Object
     #blockchain;
+    #target;
 
     constructor() {
+        this.#target = 3;
         this.#blockchain = [this.startGenesisBlock()] // Initialize a new array of blocks, starting with a genesis block
+    }
+
+    getTarget() {
+        return this.#target;
     }
 
     startGenesisBlock() {

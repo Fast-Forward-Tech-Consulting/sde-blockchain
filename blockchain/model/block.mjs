@@ -1,5 +1,5 @@
 import { createHash } from 'crypto'; // Import NodeJS's Crypto Module
-import Transcation from './transaction.mjs';
+import Transaction from './transaction.mjs';
 
 class Block { // Our Block Class
     /**
@@ -8,6 +8,7 @@ class Block { // Our Block Class
      * @param {String} prevHash 
      */
     constructor(trxs, prevHash = "") {
+        this.nonce = 0;
         this.timestamp = Date.now(); // Get the current timestamp
         this.trxs = trxs; // Store whatever data is relevant 
         this.prevHash = prevHash // Store the previous block's hash
