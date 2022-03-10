@@ -20,11 +20,15 @@ class TransactionPool {
     }
 
     removeByHash(hash) {
-        if (!this.#pool.some(trx => trx.hash === hash)) {
+        let trxToBeRemoved = this.#pool.find(trx => trx.hash === hash);
+
+        if (trxToBeRemoved === undefined) {
             throw new Error(`Trx ${hash} is not in pool and cannot be removed`);
         }
 
         this.#pool = this.#pool.filter(trx => trx.hash !== hash);
+
+        return trxToBeRemoved;
     }
 
     /**

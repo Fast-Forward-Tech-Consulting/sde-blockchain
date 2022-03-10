@@ -15,6 +15,7 @@ router.get('/', function (req, res, next) {
 router.post('/',
   body("sender").isString(),
   body("receiver").isString(),
+  body("signature").isString(),
   body("amount").isNumeric({ no_symbols: false }).toInt(),
   function (req, res, next) {
     const errors = validationResult(req);
@@ -22,7 +23,9 @@ router.post('/',
       return res.status(400).json({ errors: errors.array() });
     }
 
-    var trx = new Transaction(req.body.sender, req.body.receiver, req.body.amount);
+    let { sender, receiver, amount, signature } = req.body;
+
+    var trx = new Transaction(sender, receiver, amount, signature);
     pool.add(trx);
     res.send(trx);
   })
@@ -30,8 +33,7 @@ router.post('/',
 /* DELETE remove trx from pool */
 router.delete('/:hash',
   function (req, res, next) {
-    pool.removeByHash(req.params.hash);
-    res.send("success");
+    res.send(pool.removeByHash(req.params.hash));
   })
 
 export default router;
