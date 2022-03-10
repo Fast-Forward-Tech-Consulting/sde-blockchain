@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import axios from 'axios'
-import { param, body, validationResult } from 'express-validator';
+import { param, body, check, validationResult } from 'express-validator';
 import chain from "../model/blockchain.mjs";
 import Block from "../model/block.mjs";
 
@@ -31,27 +31,32 @@ router.get('/blocks/latest',
   });
 
 /* POST add block */
-router.post('/newBlock',
+router.post('/blocks',
+  body('nonce').isNumeric().toInt(),
+  body('timestamp').isNumeric().toInt(),
+  body('prevHash').isString(),
+  check('trxs.*.sender').isString(),
+  check('trxs.*.receiver').isString(),
+  check('trxs.*.signature').isString(),
+  check('trxs.*.amount').isNumeric().toInt(),
   function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-    var trxs = axios.get('http://127.0.0.1:3001/trxpool')
-      .then(response => response.data.map(trx => Transaction.fromObject(trx)));
+    let { trxs, nonce, timestamp, prevHash } = req.body;
 
-    var latestBlock = axios.get("http://127.0.0.1:3000/chain/blocks/latest")
-      .then(response => response.data);
+    let block = new Block(trxs, nonce, timestamp, prevHash);
+    block.validate(chain.obtainLatestBlock().hash, chain.getTarget())
 
-    Promise
-      .all([trxs, latestBlock])
-      .then(async ([trxs, latestBlock]) => {
-        let block = new Block(trxs, latestBlock.hash);
-        chain.addNewBlock(block);
+    chain.addNewBlock(block);
 
-        trxs.map(trx => {
-          axios.delete(`http://127.0.0.1:3001/trxpool/${trx.hash}`).catch(console.log)
-        });
-        res.send(block);
-      })
-      .catch(error => console.log(error));
+    Promise.all(trxs.map(trx => {
+      axios.delete(`http://127.0.0.1:3001/trxpool/${trx.hash}`).catch(console.log)
+    }))
+      .then(() => res.send(block))
+      .catch(console.log);
   })
 
 

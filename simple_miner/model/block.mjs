@@ -3,12 +3,12 @@ import { createHash } from 'crypto'; // Import NodeJS's Crypto Module
 class Block { // Our Block Class
     /**
      * Create a new Block with a Transcation
-     * @param {Transcation} trx 
+     * @param {Transaction} trx 
      * @param {String} prevHash 
      */
-    constructor(trxs, prevHash = "") {
-        this.nonce = 0;
-        this.timestamp = Date.now(); // Get the current timestamp
+    constructor(trxs, prevHash = "", nonce = 0, timestamp = Date.now()) {
+        this.nonce = nonce;
+        this.timestamp = timestamp;
         this.trxs = trxs; // Store whatever data is relevant 
         this.prevHash = prevHash // Store the previous block's hash
         this.hash = this.computeHash() // Compute this block's hash

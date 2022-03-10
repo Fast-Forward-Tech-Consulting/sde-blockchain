@@ -3,6 +3,7 @@ import Transaction from "./model/transaction.mjs";
 import axios from "axios";
 
 while (true) {
+    console.log("Miner - New Block")
     await sleep(2000);
 
     var trxs = axios.get('http://127.0.0.1:3001/trxpool')
@@ -14,19 +15,21 @@ while (true) {
     var target = axios.get("http://127.0.0.1:3000/target")
         .then(response => response.data.target);
 
-    Promise
+    await Promise
         .all([trxs, latestBlock, target])
         .then(async ([trxs, latestBlock, target]) => {
+            console.log(`Miner - Start Mining with ${target}`)
             let block = new Block(trxs, latestBlock.hash);
 
             block.mine(target);
+            console.log(`Miner - Found a Block with nonce ${block.nonce}`);
 
-            return block;
+            return axios.post("http://127.0.0.1:3000/chain/blocks", block);
         })
-        .then(block => {
-            console.log(`Miner - Found a Block with nonce ${block.nonce}`, block);
+        .then(res => {
+            console.log("Miner - Successfully sent to Blockchain")
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log("Miner - Error while sending to Blockchain"));
 }
 
 function sleep(ms) {

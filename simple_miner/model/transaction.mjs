@@ -8,12 +8,12 @@ class Transaction {
      * @param {Number} amount 
      * @param {String} signature
      */
-    constructor(sender, receiver, amount, signature = "", createdAt = Date.now()) {
-        this.createdAt = createdAt;
+    constructor(sender, receiver, amount, signature = "asd23wea", createdAt = Date.now()) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.signature = signature;
+        this.createdAt = createdAt;
 
         this.hash = this.computeHash();
     }
