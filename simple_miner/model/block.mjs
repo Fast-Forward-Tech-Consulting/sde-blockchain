@@ -28,15 +28,6 @@ class Block { // Our Block Class
             this.nonce++;
             this.hash = this.computeHash()
         }
-
-        console.log(`Miner - Nonce ${this.nonce}found!`);
-        /*return new Promise((resolve, reject) => {
-            while(blockFound) {
-                setImmediate(() => {
-                    
-                })
-            }
-        })*/
     }
 
 }
