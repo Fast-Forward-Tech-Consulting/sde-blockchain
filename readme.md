@@ -17,17 +17,17 @@
 
 # Blockchain Application
 ## System Overview
-This is a simple Blockchain application playing with the concepts of Proof of Work, Transaction Pools and Cryptographic signatures. On the infrastructure side it leverages containers to scale up certain components (mining). 
+This is a simple blockchain application that plays with the concepts of proof of work, transaction pools, and cryptographic signatures. On the infrastructure side, it uses docker containers and docker compose to scale certain components (mining).
 
 ![System Overview](.documentation/system_overview.png?raw=true "System Overview")
 
 ### Proof-of-Work Consensus
-The system uses a Proof-of-Work Consensus. That means that the Miners need to do some (useless) work in order to commit a block to the blockchain. As long as the majority of miners follow the rules of the system, the system will stay in a valid state. If a malicious participitiant wants to manipulate the system, it is not enough to create many miners. He will have to equip them with more CPU resources than the sum of the correct nodes.
+The system uses a proof-of-work consensus. This means that miners must perform a certain amount of (useless) work in order to commit a block to the blockchain. As long as the majority of miners abide by the system's rules, the system will remain in a valid state. If a malicious participant wants to manipulate the system, it is not enough to create many miners. He must provide them with more CPU resources than the sum of correct nodes.
 
 ## Model
 
 ### Transaction (Trx)
-A Transaction resembles the record a money flow from one user to another. Therefore it contains a creation timestamp, sender, receiver and an amount. Furthermore, it contains a signature of the sender confirming that the transaction is created by him. This signature is not validated. Derived from these values a hash of the transaction is created which can identify the transaction.
+A transaction represents the record of a flow of money from one user to another. It therefore contains a creation timestamp, sender, receiver and an amount. It also contains a signature of the sender confirming that the transaction was created by him. In this system the signature is not validated. A hash of the transaction is derived from these values, which can identify the transaction.
 ```json
 {
     "sender": "john",
@@ -40,9 +40,9 @@ A Transaction resembles the record a money flow from one user to another. Theref
 ```
 
 ### Block
-A block in the Blockchain contains a timestamp of the creation time of the block (start of mining), an array of transactions, the ID of the Miner that mined the block. Additionally it contains the hash of the previous block and a nonce. Derived from these values a hash of the block is created. 
+A block in the blockchain contains a timestamp of the block's creation time (start of mining), a set of transactions, the ID of the miner who mined the block. It also contains the hash value of the previous block and a nonce. A hash of the block is created from these values. 
 
-The process of mining is defined as the continous effort of the miner to change the nonce so that the newly calculated hash of the block begins with a number (target) of zeros ("0"). If the blockchain has a target of 6 it will only accept new Block with a hash with 6 leading zeros (e.g. "000000b10640a0ae5c4...").
+The process of mining is defined as the continuous effort of the miner to change the nonce so that the newly calculated hash of the block starts with a number  of zeros (target). If the blockchain has a target of 6, it will only accept new blocks with a hash of 6 leading zeros (e.g., "000000b10640a0ae5c4...").
 ```jsonc
 {
     "nonce": 128,
@@ -63,11 +63,10 @@ The process of mining is defined as the continous effort of the miner to change 
     "hash": "000000b10640a0ae5c46465ed4de177b684a3ce6c202c5703fead8894fc35a8"
 }
 ```
-The Genesisblock of the Blockchain is a special block. It does not contain a "prevHash" value, since it is the first block.
+The genesis block of the blockchain is a special block. It does not contain a "prevHash" value because it is the first block.
 
 #### Immutability of the Blockchain
-Due to the fact that the hash of the previous block is part of a block it is very hard for an attacker to change something in the blockchain. A change in a block (or in a trasanction within a block) would result in a changed hash. First it requires resources to compute this. Furthermore, the following block contains the hash of the changed block. Therefore, the hash of the following block need to be recomputed aswell. This continues to the last commited block. The more blocks are appended to a block, the harder it gets to change it. 
-
+Since the hash of the previous block is part of a block, it is very difficult for an attacker to change anything in the blockchain. A change in a block (or in a trasanction within a block) would result in a changed hash. Moreover, the following block contains the hash of the changed block. Therefore, the hash of the following block must also be recalculated. This continues until the last commited block. Computing all these hashes requires a lot of resources. Meanwhile, legitimate miners mine based on the legitimate chain. Therefore, the attacker would need so many computational resources to repeat all the work done by the legitimate miners since the modified block and catch up. This may be possible if the block was added recently. However, the more blocks are appended after a block, the more difficult it becomes to change it.
 ![Blockchain](.documentation/blockchain.png?raw=true "Blockchain")
 
 ## API
