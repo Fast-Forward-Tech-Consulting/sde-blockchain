@@ -18,7 +18,8 @@
 # Blockchain Application
 ## System Overview
 This is a simple Blockchain application playing with the concepts of Proof of Work, Transaction Pools and Cryptographic signatures. On the infrastructure side it leverages containers to scale up certain components (mining). 
-![System Overview](system_overview.png?raw=true "System Overview")
+
+![System Overview](.documentation/system_overview.png?raw=true "System Overview")
 
 ### Proof-of-Work Consensus
 The system uses a Proof-of-Work Consensus. That means that the Miners need to do some (useless) work in order to commit a block to the blockchain. As long as the majority of miners follow the rules of the system, the system will stay in a valid state. If a malicious participitiant wants to manipulate the system, it is not enough to create many miners. He will have to equip them with more CPU resources than the sum of the correct nodes.
@@ -66,6 +67,8 @@ The Genesisblock of the Blockchain is a special block. It does not contain a "pr
 
 #### Immutability of the Blockchain
 Due to the fact that the hash of the previous block is part of a block it is very hard for an attacker to change something in the blockchain. A change in a block (or in a trasanction within a block) would result in a changed hash. First it requires resources to compute this. Furthermore, the following block contains the hash of the changed block. Therefore, the hash of the following block need to be recomputed aswell. This continues to the last commited block. The more blocks are appended to a block, the harder it gets to change it. 
+
+![Blockchain](.documentation/blockchain.png?raw=true "Blockchain")
 
 ## API
 
