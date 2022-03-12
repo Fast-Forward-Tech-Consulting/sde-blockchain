@@ -13,7 +13,7 @@
 ## Infrastructure
 - [x] Separate Blockchain, Miner and Transactionpool in individual Express servers and let them communicate via HTTP requests and subscriptions
     - [x] docker setup 
-    - [ ] Setup docker-compose with network
+    - [x] Setup docker-compose
 
 # Blockchain Application
 ## System Overview
