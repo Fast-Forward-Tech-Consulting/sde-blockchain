@@ -1,0 +1,26 @@
+services:
+  blockchain:
+    image: sde/blockchain
+    build: ./blockchain
+    environment:
+      - TARGET=5
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+
+  trxpool:
+    image: sde/trxpool
+    build: ./trxpool
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3001:3001"
+
+  miner:
+    image: sde/miner
+    build: ./miner
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - "blockchain"
+      - "trxpool"

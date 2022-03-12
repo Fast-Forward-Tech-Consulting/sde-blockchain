@@ -4,7 +4,8 @@ import { param, body, check, validationResult } from 'express-validator';
 import chain from "../model/blockchain.mjs";
 import Block from "../model/block.mjs";
 
-import Transaction from '../model/transaction.mjs';
+const TRXPOOL_BASE_URL = process.env.NODE_ENV === "production" ? "trxpool" : "127.0.0.1";
+console.log("TRXPOOL: ", TRXPOOL_BASE_URL);
 
 var router = Router();
 
@@ -57,7 +58,7 @@ router.post('/blocks',
     console.log(`Blockchain - 💸 Block from Miner #${req?.body?.minedBy} was added to chain`);
 
     Promise.all(trxs.map(trx => {
-      axios.delete(`http://127.0.0.1:3001/trxpool/${trx.hash}`).catch(console.log)
+      axios.delete(`http://${TRXPOOL_BASE_URL}:3001/trxpool/${trx.hash}`).catch(console.log)
     }))
       .then(() => res.send(block))
       .catch(console.log);

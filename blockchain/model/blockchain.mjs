@@ -10,10 +10,9 @@ let initialTransactions = [
 
 class BlockChain { // Our Blockchain Object
     #blockchain;
-    #target;
+    #target = process.env.TARGET || 6;
 
     constructor() {
-        this.#target = 6;
         this.#blockchain = [this.startGenesisBlock()] // Initialize a new array of blocks, starting with a genesis block
     }
 

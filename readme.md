@@ -217,6 +217,22 @@ Delete the transaction with the hash. Fails if no transaction with the hash is i
 
 # Useful Commands
 
+## Docker Compose
+
+### Run
+```
+docker-compose up --scale miner=3
+```
+
+### Rebuild 
+```
+docker-compose build
+```
+Only single container
+```
+docker-compose build [CONTAINER_NAME]
+```
+
 ## Create Docker Image
 ```
 /workspaces/sde-blockchain/blockchain (main ✗) $ docker build . -t martin/blockchain-app
