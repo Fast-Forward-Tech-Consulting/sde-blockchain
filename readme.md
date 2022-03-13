@@ -18,7 +18,7 @@ The system uses a proof-of-work consensus. This means that miners must perform a
 ### Transaction (Trx)
 A transaction represents the record of a flow of money from one user to another. It therefore contains a creation timestamp, sender, receiver and an amount. It also contains a signature of the sender confirming that the transaction was created by him. A hash of the transaction is derived from these values, which can identify the transaction.
 
-> :warning: **Transcations not validated:**
+> :warning: **Transactions not validated:**
 > 
 > The miners do not validate the transactions before mining a block as they would in a full blockchain system. Therefore, anyone can create transactions with any amount even if one does not have sufficient funds on the blockchain or use a signature that does not check out.
 
