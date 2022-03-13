@@ -1,6 +1,6 @@
 # Blockchain Application
 ## Tech Stack
-- [NodeJS](https://nodejs.dev/), [Express](https://expressjs.com/), [Express-validator](https://express-validator.github.io/docs/)
+- [NodeJS](https://nodejs.dev/), [Express](https://expressjs.com/), [Express-validator](https://express-validator.github.io/docs/), [nodemon](https://nodemon.io/)
 - [REST](https://restfulapi.net/)
 - [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/reference/)
 - [Postman](https://www.postman.com/) & [Thunder Client](https://www.thunderclient.com/)
@@ -85,7 +85,7 @@ docker-compose build [CONTAINER_NAME]
 ```
 
 ## Development
-To run the services without docker and with nodemon to enable hot-reloading and show changes immediately, run the services individually:
+To run the services without docker and with [nodemon](https://nodemon.io/) to enable hot-reloading and show changes immediately, run the services individually:
 ```bash
 # Run blockchain
 cd blockchain
