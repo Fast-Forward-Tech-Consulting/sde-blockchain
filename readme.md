@@ -1,19 +1,3 @@
-# Work in Progress
-- [x] Transaction Pools
-- [x] Blockchain
-    - [x] Genesis Block
-    - [ ] Validate Blocks before adding to blockchain and send result to miner
-        - [ ] sufficient funds
-        - [x] Other miner was faster
-- [x] Transactions
-- [x] Miner
-    - [x] Implement Proof of Work
-
-## Infrastructure
-- [x] Separate Blockchain, Miner and Transactionpool in individual Express servers and let them communicate via HTTP requests and subscriptions
-    - [x] docker setup 
-    - [x] Setup docker-compose
-
 # Blockchain Application
 ## Tech Stack
 - [NodeJS](https://nodejs.dev/), [Express](https://expressjs.com/), [Express-validator](https://express-validator.github.io/docs/)
