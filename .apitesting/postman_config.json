@@ -1,0 +1,213 @@
+{
+    "info": {
+        "name": "SDE-blockchain",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Trxpool",
+            "item": [
+                {
+                    "name": "Add to Transaction Pool",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "127.0.0.1:3001/trxpool",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "trxpool"
+                            ],
+                            "port": "3001"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n    \"sender\": \"Bernd\",\n    \"receiver\": \"Sofie\",\n    \"amount\": 32,\n    \"signature\": \"sadjlsjdlakds\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get TransactionPool",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "127.0.0.1:3001/trxpool",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "trxpool"
+                            ],
+                            "port": "3001"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Delete Trx from pool",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "127.0.0.1:3001/trxpool/16b98df0d87a0f70d7e1a5829dd8dfdf79a4c2d428e59149388e61194b05c874",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "trxpool",
+                                "16b98df0d87a0f70d7e1a5829dd8dfdf79a4c2d428e59149388e61194b05c874"
+                            ],
+                            "port": "3001"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Blockchain",
+            "item": [
+                {
+                    "name": "Get Chain",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "127.0.0.1:3000/chain",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "chain"
+                            ],
+                            "port": "3000"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get target",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "127.0.0.1:3000/target",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "target"
+                            ],
+                            "port": "3000"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Create new Block",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://127.0.0.1:3000/chain/blocks",
+                            "protocol": "http",
+                            "host": [
+                                "127",
+                                "0",
+                                "0",
+                                "1"
+                            ],
+                            "path": [
+                                "chain",
+                                "blocks"
+                            ],
+                            "port": "3000"
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"nonce\": 78434,\n  \"timestamp\": 1646918047703,\n  \"minedBy\": \"786\",\n  \"trxs\": [{\n      \"createdAt\": 1646916914999,\n      \"sender\": \"Bernd\",\n      \"receiver\": \"Sofie\",\n      \"amount\": \"32\",\n      \"signature\": \"asdfs\",\n      \"hash\": \"d92a8f18f87c81cfd38f3008a9da3b934243ebe1759021a217541d7954d11b10\"\n    }\n  ],\n  \"prevHash\": \"a3513e1110acb9111579a8f9a49e3d6f5629d5248d314ba3a7f5643740137ab6\",\n  \"hash\": \"00000e4b2469446305586c043663aaed50d1c7b826b2a44358264278471c5a7c\"\n}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
