@@ -1,21 +1,10 @@
-# Work in Progress
-- [x] Transaction Pools
-- [x] Blockchain
-    - [x] Genesis Block
-    - [ ] Validate Blocks before adding to blockchain and send result to miner
-        - [ ] sufficient funds
-        - [x] Other miner was faster
-- [x] Transactions
-    - [ ] Add Cryptographic signatures to Transactions
-- [x] Miner
-    - [x] Implement Proof of Work
-
-## Infrastructure
-- [x] Separate Blockchain, Miner and Transactionpool in individual Express servers and let them communicate via HTTP requests and subscriptions
-    - [x] docker setup 
-    - [x] Setup docker-compose
-
 # Blockchain Application
+## Tech Stack
+- [NodeJS](https://nodejs.dev/), [Express](https://expressjs.com/), [Express-validator](https://express-validator.github.io/docs/), [nodemon](https://nodemon.io/)
+- [REST](https://restfulapi.net/)
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/reference/)
+- [Postman](https://www.postman.com/) & [Thunder Client](https://www.thunderclient.com/)
+
 ## System Overview
 This is a simple blockchain application that plays with the concepts of proof of work, transaction pools, and cryptographic signatures. On the infrastructure side, it uses docker containers and docker compose to scale certain components (mining).
 
@@ -27,7 +16,12 @@ The system uses a proof-of-work consensus. This means that miners must perform a
 ## Model
 
 ### Transaction (Trx)
-A transaction represents the record of a flow of money from one user to another. It therefore contains a creation timestamp, sender, receiver and an amount. It also contains a signature of the sender confirming that the transaction was created by him. In this system the signature is not validated. A hash of the transaction is derived from these values, which can identify the transaction.
+A transaction represents the record of a flow of money from one user to another. It therefore contains a creation timestamp, sender, receiver and an amount. It also contains a signature of the sender confirming that the transaction was created by him. A hash of the transaction is derived from these values, which can identify the transaction.
+
+> :warning: **Transactions not validated:**
+> 
+> The miners do not validate the transactions before mining a block as they would in a full blockchain system. Therefore, anyone can create transactions with any amount even if one does not have sufficient funds on the blockchain or use a signature that does not check out.
+
 ```json
 {
     "sender": "john",
@@ -69,11 +63,52 @@ The genesis block of the blockchain is a special block. It does not contain a "p
 Since the hash of the previous block is part of a block, it is very difficult for an attacker to change anything in the blockchain. A change in a block (or in a trasanction within a block) would result in a changed hash. Moreover, the following block contains the hash of the changed block. Therefore, the hash of the following block must also be recalculated. This continues until the last commited block. Computing all these hashes requires a lot of resources. Meanwhile, legitimate miners mine based on the legitimate chain. Therefore, the attacker would need so many computational resources to repeat all the work done by the legitimate miners since the modified block and catch up. This may be possible if the block was added recently. However, the more blocks are appended after a block, the more difficult it becomes to change it.
 ![Blockchain](.documentation/blockchain.png?raw=true "Blockchain")
 
-## API
+# Run Instructions
 
-### Blockchain
+## Production
 
-#### GET /target
+### Run
+Run all modules. If it has not been run before, docker compose will build the services automatically. The number of miners can be arbitarily chosen.
+```
+docker-compose up --scale miner=3
+```
+
+### Rebuild 
+If necessary to rebuild the services, use the following commands. 
+Rebuild all services:
+```
+docker-compose build
+```
+Rebuild a single service:
+```
+docker-compose build [CONTAINER_NAME]
+```
+
+## Development
+To run the services without docker and with [nodemon](https://nodemon.io/) to enable hot-reloading and show changes immediately, run the services individually:
+```bash
+# Run blockchain
+cd blockchain
+npm install
+npx nodemon
+
+# Run trxpool
+cd ../trxpool
+npm install
+npx nodemon
+
+# Run miner
+cd ../miner
+npm install
+npx nodemon
+```
+
+# API
+To interact and test the services, a REST-Client such as [Postman](https://www.postman.com/) or [Thunder Client](https://www.thunderclient.com/) can be used. Configuration files are available in the directory .api_testing.
+
+## Blockchain
+
+### GET /target
 Retrieve the target for the blockchain. The target is defined as the number of leading zeros of the hash of a new block in order to be accepted by the blockchain. This endpoint is queried by the miners so they can mine new blocks meeting the target.
 ```json
 {
@@ -81,7 +116,7 @@ Retrieve the target for the blockchain. The target is defined as the number of l
 }
 ```
 
-#### GET /chain/blocks
+### GET /chain/blocks
 Retrieve all Blocks from the Blockchain
 ```jsonc
 [
@@ -107,7 +142,7 @@ Retrieve all Blocks from the Blockchain
 ]
 ```
 
-#### GET /chain/blocks/:index
+### GET /chain/blocks/:index
 Retrieve nth block from the blockchain.
 ```jsonc
 {
@@ -130,7 +165,7 @@ Retrieve nth block from the blockchain.
 }
 ```
 
-#### GET /chain/blocks/latest
+### GET /chain/blocks/latest
 Retrieve the last (most recently added) block from the Blockchain
 ```jsonc
 {
@@ -153,7 +188,7 @@ Retrieve the last (most recently added) block from the Blockchain
 }
 ```
 
-#### POST /chain/blocks
+### POST /chain/blocks
 This endpoint is used by the Miners to send a new block to the blockchain. The blockchain service than validates that all the hashes are correctly calculated and that the proposed block refers to the latest block of the chain. If this is not the case, the block is rejected.
 ```jsonc
 {
@@ -175,10 +210,10 @@ This endpoint is used by the Miners to send a new block to the blockchain. The b
 }
 ```
 
-### TransactionPool
+## TransactionPool
 The transaction pool service receives the transactions from the users of the system. Without the transaction pool the users would need to supply their transactions to all the miners individually. Before the beginning of the mining, the miner queries the transactionpool for all open transactions. 
 
-#### POST /trxpool
+### POST /trxpool
 Add a new transaction to the pool. The timestamp and hash a created by the pool. If a transaction with the same hash already exists, an HTTP error is returned.
 ```jsonc
 {
@@ -190,7 +225,7 @@ Add a new transaction to the pool. The timestamp and hash a created by the pool.
 ```
 The endpoint returns the created transaction (including the timestamp and the hash).
 
-#### GET /trxpool 
+### GET /trxpool 
 Retrieve an array of all transactions in the pool
 ```jsonc
 [
@@ -214,47 +249,5 @@ Retrieve an array of all transactions in the pool
 ]
 ```
 
-#### DELETE /trxpool/:hash
+### DELETE /trxpool/:hash
 Delete the transaction with the hash. Fails if no transaction with the hash is in the pool. If deleted successfully, the endpoint returns the transaction.
-
-# Useful Commands
-
-## Docker Compose
-
-### Run
-```
-docker-compose up --scale miner=3
-```
-
-### Rebuild 
-```
-docker-compose build
-```
-Only single container
-```
-docker-compose build [CONTAINER_NAME]
-```
-
-## Create Docker Image
-```
-/workspaces/sde-blockchain/blockchain (main ✗) $ docker build . -t martin/blockchain-app
-```
-
-## Remove Docker image
-```
-docker rmi martin/blockchain-app --force
-```
-
-## Run
-```
-docker run -p 3000:3000 -d martin/blockchain-app
-```
-
-## Logs
-```
-# Get Container ID
-$ docker ps
-
-# Print app output
-$ docker logs <container id>
-```
